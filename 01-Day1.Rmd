@@ -1,21 +1,71 @@
-# Introduction {#intro}
+# Day 1 {#day1}
 
 You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
 
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
 
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
+
+## Prepare environment
+
+The first thing to do when running any R script, is to set your working environment and load any libraries you may need.
+
+```{r}
+setwd("~/Documents/teaching/US_bioinformatics/practical/rnaseq_practical/")
+library(tidyverse) # for plotting and data management
 ```
 
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
 
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
+## Introduction
+
+We have already done the following:
+
+1. Performed the experiment
+2. Extracted the RNA
+3. Sequenced the RNA
+4. Cleaned/trimmed sequences
+5. Quantified sequence by mapping onto our reference genome with salmon
+6. Combined tabulated counts using tximport
+
+
+## Exploring the count matrix
+
+We now have a `salmon_counts.rds` object.
+
+For those of you unfamiliar, `.rds` files is a single R data object, created with `saveRDS()`. It is particularly useful for saving R objects that are more than 2-dimensional. a practical feature is also that you can assign the object to a new name:
+
+```{r}
+txi<-readRDS("./data/salmon_counts.rds")
 ```
 
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+What is this object?
+```{md}
+answer:
+* a list with 4 entries, three arrays/matrices, 1 character vector
+```
+
+ 
+```{r}
+str(txi)
+lapply(X=txi, FUN=head)
+```
+
+What is the content of this object?
+
+```{r}
+#: https://salmon.readthedocs.io/en/latest/file_formats.html
+# abundance: Abundance calculations from the quantifier (salmon). According to the salmon documentions, this is TPM. How could we double check this? - columns should add up to 1 million:
+
+apply(X=txi$abundance, FUN=sum, MARGIN = 2)
+
+
+# length: effective length of the target transcript. Note!! The length is not the same : This is the computed effective length of the target transcript. It takes into account all factors being modeled that will effect the probability of sampling fragments from this transcript, including the fragment length distribution and sequence-specific and gc-fragment bias (if they are being modeled).
+apply(X=txi$counts, FUN=sum, MARGIN = 2)
+
+txi$length[,1]
+apply(X=txi$length, FUN=sum, MARGIN = 2)
+
+
+* counts: 
+* length: 
+
+```
+
