@@ -9,7 +9,7 @@ You can label chapter and section titles using `{#label}` after them, e.g., we c
 The first thing to do when running any R script, is to set your working environment and load any libraries you may need.
 
 ```{r}
-setwd("~/Documents/teaching/US_bioinformatics/practical/rnaseq_practical/")
+#setwd("~/Documents/teaching/US_bioinformatics/practical/rnaseq_practical/")
 library(tidyverse) # for plotting and data management
 ```
 
@@ -64,8 +64,8 @@ txi$length[,1]
 apply(X=txi$length, FUN=sum, MARGIN = 2)
 
 
-* counts: 
-* length: 
+# counts: 
+# length: 
 
 ```
 

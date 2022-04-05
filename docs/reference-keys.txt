@@ -1,7 +1,8 @@
-fig:nice-fig
-tab:nice-tab
 background
-intro
+day1
+prepare-environment
+introduction
+exploring-the-count-matrix
 literature
 methods
 math-example
